@@ -3,6 +3,7 @@ import { useState } from 'react';
 import SoftBackdrop from './SoftBackdrop';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast'; 
 
 const Login = () => {
     const [state, setState] = useState('login');
@@ -21,12 +22,18 @@ const Login = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (state === 'login') {
-            login(formData);
-        } else {
-            signUp(formData);
+        try {
+            if (state === 'login') {
+                await login(formData);
+            } else {
+                await signUp(formData);
+            }
+        } catch (error: any) {
+            console.log("Login Error:", error);
+            // 👈 3. Display Toast Error Popup
+            toast.error(error?.response?.data?.message || error?.message || 'Login failed!');
         }
     };
 

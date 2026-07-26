@@ -35,8 +35,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setIsLoggedIn(true);
             }
             toast.success(data.message);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            // ✅ FIX 1: Error Toast yahan trigger karo
+            toast.error(error?.response?.data?.message || 'Registration failed');
         }
     };
 
@@ -48,8 +50,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 setIsLoggedIn(true);
             }
             toast.success(data.message);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            // ✅ FIX 2: Pop-up toast error message ke sath trigger karo
+            toast.error(error?.response?.data?.message || 'Login failed');
         }
     };
 
@@ -59,8 +63,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUser(null);
             setIsLoggedIn(false);
             toast.success(data.message);
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
+            toast.error(error?.response?.data?.message || 'Logout failed');
         }
     };
 
